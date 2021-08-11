@@ -5,7 +5,25 @@ const PhotoGridItem = ({ id, src, alt, tags }) => {
   return (
     <article>
       <Anchor href={`/photos/${id}`}>
-        <Image src={src} />
+        <picture>
+          <source 
+          type="image/avif"
+          srcSet = {`
+          ${src.replace('.jpg', '.avif')},
+          ${src.replace('.jpg', '@2x.avif')},
+          ${src.replace('.jpg', '@3x.avif')}
+          `}
+          />
+          <source 
+          type="image/jpg"
+          srcSet = {`
+          ${src},
+          ${src.replace('.jpg', '@2x.jpg')},
+          ${src.replace('.jpg', '@3x.jpg')}
+          `}
+          />          
+        <Image src={src} alt={src.replace('.jpg', '')}/>
+        </picture>
       </Anchor>
       <Tags>
         {tags.map((tag) => (
@@ -28,6 +46,7 @@ const Image = styled.img`
   height: 300px;
   border-radius: 2px;
   margin-bottom: 8px;
+  object-fit: cover;
 `;
 
 const Tags = styled.ul`
